@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import pandas as pd
+import numpy as np
 import io
 FileError = ''
 
@@ -16,8 +17,9 @@ def ValidateFile(request):
     if request.method == 'POST':
             uploaded_file = request.FILES.get('file_data')
             if uploaded_file is not None:
-                dataframe = pd.read_csv(io.StringIO(uploaded_file.read().decode('utf-8')), delimiter=',')
+                dataframe = pd.read_csv(io.StringIO(uploaded_file.read().decode('utf-8')), delimiter=',',keep_default_na=False,na_values = "")
                 #print(dataframe)
+
                 validating(dataframe)
 
 
@@ -45,13 +47,12 @@ def validating(dataframe):
    
     #-----------------------Null Value Validate---------------------------------
     try:
-        if dataframe.isna():
-           print("Null Value Error")
+        if (dataframe.isnull().values.any()):
+            FileError = 'Remove Blanks'
         else:
-            Print("Null Ok")
+            print("No blanks")
 
     except Exception as e:
-        print("Blanks Available")
         FileError = 'Remove Blanks'
         print(e)
         pass
