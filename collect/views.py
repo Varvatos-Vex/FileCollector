@@ -56,5 +56,13 @@ def validating(dataframe):
         FileError = 'Remove Blanks'
         print(e)
         pass
+
+    #-----------------------Trim every cell---------------------------------
+    try:
+        dataframe = dataframe.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+    except Exception as e:
+        FileError = 'Trim Error'
+        print(e)
+        pass
     
 
