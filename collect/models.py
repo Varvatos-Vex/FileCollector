@@ -18,4 +18,6 @@ class AliasTable(models.Model):
 class FileDetails(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     ThreatActor =  models.CharField(max_length=30)
+    User =  models.CharField(max_length=30)
+    Index =  models.CharField(max_length=30)
     FilePath = models.FileField(upload_to='Files/')
