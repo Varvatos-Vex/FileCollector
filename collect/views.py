@@ -8,12 +8,12 @@ import time
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
-
+from .models import FileDetails
 
 FileError = ''
 
 @csrf_exempt
-@login_required(login_url='index')
+@login_required(login_url='login')
 def index(request):
     return render(request, 'index.html')
 
@@ -50,14 +50,22 @@ def ValidateFile(request):
             if uploaded_file is not None:
                 dataframe = pd.read_csv(io.StringIO(uploaded_file.read().decode('utf-8')), delimiter=',',keep_default_na=False,na_values = "")
                 #print(dataframe)
-                ThreatActor = dataframe['ThreatActor']
+                ThreatActor = dataframe['ThreatActor'].iloc[0]
+                user = request.user
+                Index = CheckIndex(dataframe)
                 validating(dataframe)
 
+                if (FileError == 'success'):
+                    ob = FileDetails(User = user, Index= Index, ThreatActor=ThreatActor,FilePath= uploaded_file)
+                    #print(ob)
+                    ob.save()
+                    return HttpResponse(FileError)
+                    
+                else:
+                    return HttpResponse(FileError)
 
 
 
-
-                return HttpResponse(FileError)
             else:
                 return HttpResponse("File not Found")
     else:
@@ -71,7 +79,6 @@ def validating(dataframe):
     try:
         pd.to_datetime(dataframe['DateofInput'], format='%Y-%m-%d', errors='raise')
         print("Date Validation Ok")
-        time.sleep(5)
     except ValueError:
         print("Date Validation Failed")
         FileError = 'Date Validation Failed'
@@ -97,4 +104,16 @@ def validating(dataframe):
         print(e)
         pass
     
+def CheckIndex(dataframe):
+    global FileError
+    indx1 = dataframe.columns.tolist() #----main DataFrame File
+
+    indx2 = ['Team', 'SourceofIOC', 'NameofAnalyst', 'Month', 'DateofInput', 'ThreatActor', 'SuspectedAttribution', 'Type', 'IntentofThreatActor', 'IOCDetails', 'DerivedIOC', 'DerivedType', 'ViolationIP', 'VT_Detection', 'AbuseIpDB', 'TPI', 'Country', 'NameofOrganistion', 'UsageType', 'FirstSeen', 'Violation_Date', 'LastSeen', 'DetectBetweenFirstLastSeen', 'CII', 'Sectors', 'ConnectionType', 'ViolationPort', 'Status', 'OriginalPulseName', 'Tag', 'Aliases', 'IOCType', 'Remarks']
+    indx3 = ['Team','SourceofIOC','Month','DateofInput','ThreatActor','SuspectedAttribution','Type','IntentofThreatActor','IOCDetails','OriginalPulseName','Tag','IOCType','Remarks']
+    if (indx1 == indx2):
+        return "Datalake_TA"
+    elif(indx1 == indx3):
+        return "Datalake"
+    else:
+        FileError = 'Wrong Header'
 

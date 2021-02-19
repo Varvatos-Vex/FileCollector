@@ -5,8 +5,7 @@ import numpy as np
 dataframe = pd.read_csv('/home/user/Documents/FileCollector/TeamTNT_ta.csv', delimiter=',',keep_default_na=False,na_values = "")
 
 
-ThreatActor = dataframe['ThreatActor']
-print(ThreatActor)
+print(dataframe['ThreatActor'].iloc[0])
 
 
 
