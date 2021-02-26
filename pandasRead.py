@@ -1,15 +1,20 @@
 import pandas as pd
 import numpy as np
 
+from datetime import datetime
+from dateutil import parser
+
+tmp = "January 26, 2021"
+print(parser.parse(tmp))
+#print(datetime.strptime(tmp, '%B %m, %Y'))
+
+
+exit(1)
 
 dataframe = pd.read_csv('/home/user/Documents/FileCollector/TeamTNT_ta.csv', delimiter=',',keep_default_na=False,na_values = "")
 
 
 print(dataframe['ThreatActor'].iloc[0])
-
-
-
-exit(1)
 
 
 #----------------------To Strip every cell in CSV---------------------------

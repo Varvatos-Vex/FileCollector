@@ -1,0 +1,108 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main_content %}
+
+{% load static %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" id="file-upload-form" enctype="multipart/form-data" action="/FileValidate/" > 
+                {% csrf_token %}
+                <div class="container-fluid">
+                    <div class="input-group">
+                        <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file"  accept=".csv">
+                        <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                        <button id ="check" class="btn btn-outline-secondary" type="button">Button</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> 
+    </div>
+
+
+<div class="row" style="margin:20px"> </div>
+
+    <div class="row">
+        <div class="col-md-12 card" style="padding:10px">
+            <table id="example" class="table display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>ThreatActor</th>
+                        <th>Index</th>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for dt in FileData %}
+                    <tr>
+                        <td>{{  dt.date | date:"d-m-Y"|lower }}</td>
+                        <td>{{  dt.ThreatActor }}</td>
+                        <td>{{  dt.Index }}</td>
+                        <td> <a href='/media/{{ dt.FilePath }}'>Download</a> </td>
+                        <!--td>{{  dt.FilePath }}</td-->
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="{% static "jquery/jquery-3.5.1.min.js" %}"></script>
+<script>
+    $('#check').click(function(event){ 
+        var file_data = $('#file').get(0).files[0]; // note [0]
+        var formData = new FormData();
+        formData.append('file_data', file_data);
+        $.ajax( 
+            { 
+                type:"POST", 
+                url: '{% url "validate" %}', 
+                data: formData,
+                processData: false,
+                contentType: false,
+
+            beforeSend: function(){
+                // Show image container
+                $("#loader").show();
+            },    
+
+            success: function( data ) 
+            { 
+            console.log(data) 
+            if(data=="success"){
+                alert(data)
+            }
+            else{
+                alert(data) 
+            }
+          },
+          error: function(data) {
+            console.log('Failed');
+            },
+            complete:function(data){
+                // Hide image container
+                $("#loader").hide();
+            } 
+        })
+    });
+</script>
+
+
+
+
+{% endblock main_content %}
+

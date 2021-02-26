@@ -1,0 +1,12 @@
+Team,SourceofIOC,NameofAnalyst,Month,DateofInput,ThreatActor,SuspectedAttribution,Type,IntentofThreatActor,IOCDetails,DerivedIOC,DerivedType,ViolationIP,VT_Detection,AbuseIpDB,TPI,Country,NameofOrganistion,UsageType,FirstSeen,Violation_Date,LastSeen,DetectBetweenFirstLastSeen,CII,Sectors,ConnectionType,ViolationPort,Status,OriginalPulseName,Tag,Aliases,IOCType,Remarks
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,aa6d74a2db3c430175e79f581afc29240b17ae6c,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA1,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,2ceb9c4347aed5dd387d261b40473f46,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,MD5,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,c900af54932bdd4c8fd749cecb5689e7e2082037,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA1,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,8b1e495e40571a5912f672f38f47058d,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,MD5,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,d4b93dd1bfb531b228353451977185f039407741,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA1,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,9417df6dc7d716b0b69e587c9d89981b,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,MD5,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,e905472faad91b87dbfc7afc838564fde3c87aa3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA1,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,a32a0b1cc226475671801360f6c53419,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,MD5,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,39ecb2d1c2a4aa01e62effc56bb27ee8d1fe34ec43e5c99ee0b138410cfa2ca9,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA256,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,af9fe480abc56cf1e1354eb243ec9f5bee9cac0d75df38249d1c64236132ceab,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,SHA256,NA
+RB,RB,FK,February,2021-02-15,Agent Tesla,Unknown,NA,Cyber Espionage,hera.lt,5.199.161.25,Derived,5.199.161.25,0,0,NA,Lithuania,UAB Cherry Servers,DCH,06-08-2020,NA,26-11-2020,NA,NA,NA,NA,NA,NA,Agent Tesla,NA,NA,Domain,NA

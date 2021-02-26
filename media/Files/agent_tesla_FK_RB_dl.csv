@@ -1,0 +1,13 @@
+Team,SourceofIOC,Month,DateofInput,ThreatActor,SuspectedAttribution,Type,IntentofThreatActor,IOCDetails,OriginalPulseName,Tag,IOCType,Remarks
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,aa6d74a2db3c430175e79f581afc29240b17ae6c,Agent Tesla,NA,SHA1,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,2ceb9c4347aed5dd387d261b40473f46,Agent Tesla,NA,MD5,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,c900af54932bdd4c8fd749cecb5689e7e2082037,Agent Tesla,NA,SHA1,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,8b1e495e40571a5912f672f38f47058d,Agent Tesla,NA,MD5,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,d4b93dd1bfb531b228353451977185f039407741,Agent Tesla,NA,SHA1,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,9417df6dc7d716b0b69e587c9d89981b,Agent Tesla,NA,MD5,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,e905472faad91b87dbfc7afc838564fde3c87aa3,Agent Tesla,NA,SHA1,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,a32a0b1cc226475671801360f6c53419,Agent Tesla,NA,MD5,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,39ecb2d1c2a4aa01e62effc56bb27ee8d1fe34ec43e5c99ee0b138410cfa2ca9,Agent Tesla,NA,SHA256,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,af9fe480abc56cf1e1354eb243ec9f5bee9cac0d75df38249d1c64236132ceab,Agent Tesla,NA,SHA256,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,88774ead57918bf293205d038402bd64ff6504d1cb1b72dba2b50061dfe88c79,Agent Tesla,NA,SHA256,NA
+RB,RB,February,2021-02-15,Agent Tesla,Unknown,Malware,Malware,hera.lt,Agent Tesla,NA,Domain,NA

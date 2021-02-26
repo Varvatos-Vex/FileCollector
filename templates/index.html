@@ -6,6 +6,13 @@
 
 
 {{ user.get_username }}
+
+
+
+<a href="{% url "logout" %}" class="btn btn-default btn-sm">
+    <span class="glyphicon glyphicon-log-out"></span> Log out
+</a>
+
 <form method="post" id="file-upload-form" enctype="multipart/form-data" action="/FileValidate/" > 
     {% csrf_token %}
     <div class="container-fluid">
@@ -53,7 +60,7 @@
             { 
             console.log(data) 
             if(data=="success"){
-                console.log(data)
+                alert(data)
             }
             else{
                 alert(data) 
