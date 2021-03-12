@@ -27,5 +27,5 @@ class AliasTableAdmin(admin.ModelAdmin):
 
 @admin.register(FileDetails)
 class FileDetailsAdmin(admin.ModelAdmin):
-    list_display = ('id','User', 'date', 'ThreatActor', 'Index', 'FilePath')
+    list_display = ('id','User', 'date', 'ThreatActor', 'Index', 'FilePath','Defination')
     pass

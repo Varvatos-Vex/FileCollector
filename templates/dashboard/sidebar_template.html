@@ -47,9 +47,33 @@
                    Report
                 </p>
               </a>
-            </li>            
+            </li>  
 
 
+
+            <li class="nav-item">
+              {% url 'tpi' as tpi %}
+              <a href="{{ tpi }}" class="nav-link  ">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                   TPI
+                </p>
+              </a>
+            </li>  
+
+
+
+            {% if request.user.is_active and request.user.is_staff %}
+            <li class="nav-item">
+              {% url 'otx' as otx %}
+              <a href="{{ otx }}" class="nav-link  ">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                   AVscript
+                </p>
+              </a>
+            </li>  
+            {% endif %}
 
 
 

@@ -6,6 +6,7 @@
 
 
 
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -14,14 +15,16 @@
                 <div class="container-fluid">
                     <div class="input-group">
                         <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file"  accept=".csv">
-                        <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                        <input type="file" class="custom-file-input" id="file-upload"  accept=".csv">
+                        <label class="custom-file-label" for="file-upload">Choose file</label>
                         </div>
                         <div class="input-group-append">
-                        <button id ="check" class="btn btn-outline-secondary" type="button">Button</button>
+                        <button id ="check" class="btn btn-success" type="button" onclick="clean()">Submit</button>
                         </div>
                     </div>
                 </div>
+                <textarea class="form-control"  aria-label="With textarea" name="definition" id = 'definition' rows=11  placeholder="Threat Actor Definition" required  maxlength="1000" ></textarea>
+                <span class="pull-right label label-default" id="count_message"></span>
             </form>
         </div> 
     </div>
@@ -64,9 +67,11 @@
 <script src="{% static "jquery/jquery-3.5.1.min.js" %}"></script>
 <script>
     $('#check').click(function(event){ 
-        var file_data = $('#file').get(0).files[0]; // note [0]
+        var file_data = $('#file-upload').get(0).files[0]; // note [0]
         var formData = new FormData();
         formData.append('file_data', file_data);
+        formData.append('definition', $("#definition").val());
+        
         $.ajax( 
             { 
                 type:"POST", 
@@ -97,8 +102,34 @@
                 // Hide image container
                 $("#loader").hide();
             } 
-        })
+        });
+
+
+
     });
+
+
+
+
+//for file name in input box
+ $('#file-upload').change(function() {
+  var i = $(this).prev('label').clone();
+  var file = $('#file-upload')[0].files[0].name;
+  $(this).next('.custom-file-label').text(file);
+});
+
+//for textarea char count_message
+var text_max = 1000;
+$('#count_message').html('0 / ' + text_max );
+
+$('#definition').keyup(function() {
+  var text_length = $('#definition').val().length;
+  var text_remaining = text_max - text_length;
+  
+  $('#count_message').html(text_length + ' / ' + text_max);
+});
+
+
 </script>
 
 

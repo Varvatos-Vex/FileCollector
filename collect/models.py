@@ -20,4 +20,5 @@ class FileDetails(models.Model):
     ThreatActor =  models.CharField(max_length=30)
     User =  models.CharField(max_length=30)
     Index =  models.CharField(max_length=30)
+    Defination =  models.CharField(max_length=1200)
     FilePath = models.FileField(upload_to='Files/')

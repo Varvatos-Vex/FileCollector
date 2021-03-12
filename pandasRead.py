@@ -4,12 +4,26 @@ import numpy as np
 from datetime import datetime
 from dateutil import parser
 
+
+dataframe = pd.read_csv('/home/user/Documents/FileCollector/TeamTNT_ta.csv', delimiter=',',keep_default_na=False,na_values = "")
+try:
+    pd.to_datetime(dataframe['DateofInput'], format='%Y-%m-%d', errors='raise')
+    print("No Error")
+    dateList = dataframe['DateofInput'].tolist()
+    print(dateList)
+except ValueError:
+    print("Date Validation Failed")
+
+
+exit(1)
+
+#----------------------To Strip every cell in CSV---------------------------
+
 tmp = "January 26, 2021"
 print(parser.parse(tmp))
 #print(datetime.strptime(tmp, '%B %m, %Y'))
 
 
-exit(1)
 
 dataframe = pd.read_csv('/home/user/Documents/FileCollector/TeamTNT_ta.csv', delimiter=',',keep_default_na=False,na_values = "")
 

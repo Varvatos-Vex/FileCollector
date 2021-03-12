@@ -10,6 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static "dashboard/fontawesome-free/css/all.min.css" %}">
+  <!--link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'-->
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
@@ -24,12 +26,14 @@
   <link rel="stylesheet" href="{% static "dashboard/overlayScrollbars/css/OverlayScrollbars.min.css" %}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{% static "dashboard/daterangepicker/daterangepicker.css" %}">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{% static "dashboard/summernote/summernote-bs4.css" %}">
+  <!-- summernote>
+  <link rel="stylesheet" href="{% static "dashboard/summernote/summernote-bs4.css" %}" -->
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     {% comment %} For Custom CSS {% endcomment %}
+
+  <link rel="stylesheet" href="{% static "./ChangePassModal.css" %}">
 
     {% block custom_css %}
     {% endblock custom_css %}
@@ -58,9 +62,8 @@
           <i class="fas fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-          
-          <a href="{% url 'dashboard' %}" class="dropdown-item">
-            <i class="fas fa-user-edit mr-2"></i> Update Profile
+          <a class="dropdown-item" data-toggle="modal" data-target="#modalRegister" href="">
+            <i class="fas fa-user-edit mr-2"></i> Change Password
           </a>
 
           <div class="dropdown-divider"></div>
@@ -74,6 +77,50 @@
 
     </nav>
     <!-- /.navbar -->
+
+
+
+
+<!--Modal For Change Password-->
+<div class="modal" tabindex="-1" role="dialog" id="modalRegister" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="box">
+          <form id="myform-search" method="post" autocomplete="off">
+          {% csrf_token %}
+          <h1>Change Password <span>choose a good one!</span></h1>
+          <form>
+            <p>
+              <input type="password" value="" placeholder="Enter Password" id="p" class="password">
+              <button class="unmask" type="button"></button>
+            </p>
+            <p>     
+              <input type="password" value="" placeholder="Confirm Password" id="p-c" class="password">
+              <button class="unmask" type="button"></button>
+            <div id="strong"><span></span></div>
+            <div id="valid"></div>
+            <small>Must be 6+ characters long and contain at least 1 upper case letter, 1 number, 1 special character</small>
+            </p>
+            <button id = 'changepass' type="button" class="btn btn-primary" disabled>Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal For Password Change -->
+
+
+
+
+
 
     <!-- Main Sidebar Container -->
     {% include 'dashboard/sidebar_template.html' with user=user id=id %}
@@ -155,6 +202,71 @@
 
 {% comment %} For Custom JS {% endcomment %}
 {% block custom_js %}
+
+
+<!--Change Password JS-->
+<script>
+$('.unmask').on('click', function(){  
+  if($(this).prev('input').attr('type') == 'password')
+    $(this).prev('input').prop('type', 'text');  
+  else
+    $(this).prev('input').prop('type', 'password');  
+  return false;
+});
+//Begin supreme heuristics 
+$('.password').on('keyup',function (){
+  var p_c = $('#p-c');
+  var p = $('#p');
+  //console.log(p.val() + p_c.val());
+ if(p.val().length > 0){
+  if(p.val() != p_c.val()) {
+    $('#valid').html("Passwords Don't Match");
+  } else {
+     $('#valid').html(''); 
+     document.getElementById('changepass').disabled = false;
+  }
+    var s = 'weak'
+if(p.val().length > 5 && p.val().match(/\d+/g))
+  s = 'medium';
+if(p.val().length > 6 && p.val().match(/[^\w\s]/gi))
+  s = 'strong';   
+   $('#strong span').addClass(s).html(s);
+  }
+});
+
+
+
+
+
+$('#changepass').click(function(event){ 
+        var new_password = document.getElementById("p").value;
+        var retype_new_password = document.getElementById("p-c").value;
+        $.ajax( 
+            { 
+                type:"POST", 
+                url: '{% url "change-pass" %}', 
+                data: {"new_password": new_password,"retype_new_password": retype_new_password},
+                
+   
+
+            success: function( data )
+            { 
+                alert(data)
+                location.reload(true)
+          },
+          error: function(data) {
+            alert('Failed');
+            }
+        })
+    });
+
+
+
+
+</script>
+<!--Change Password JS End-->
+
+
 {% endblock custom_js %}
 
 
