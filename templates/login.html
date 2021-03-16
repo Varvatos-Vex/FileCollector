@@ -5,9 +5,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Login | Threat Assessment</title>
-  <link rel="stylesheet" type="text/css" href="{% static "./login.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "login/login.css" %}" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<script src="{% static "login/prefixfree.min.js" %}"></script>
 
 </head>
 <body>
@@ -111,7 +111,8 @@
               <li></li>
             </ul>
 <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="{% static "jquery/jquery-3.5.1.min.js" %}"></script>
+  <!--script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script-->
 
 </body>
 </html>

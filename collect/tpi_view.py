@@ -71,6 +71,7 @@ def creatTpi(df):
     final_tpi = final_tpi.assign(sourceOfIoc = sourceOfIoc)
     final_tpi = final_tpi.assign(Remark = Remark)
     final_tpi = final_tpi.assign(Risk = Risk)
+    final_tpi = final_tpi.assign(Count = '1')
 
 
 #final_tpi.to_csv('FinalTpi.csv',header=True,columns=["Firstdate","Lastdate","IOCDetails","Country","sourceOfIoc","Remark","Risk"])
@@ -93,7 +94,7 @@ def tpi_res(request):
 
                 response = HttpResponse(content_type='text/csv')
                 response['Content-Disposition'] = 'attachment; filename=filename.csv'
-                final_tpi.to_csv(response,sep=';',float_format='%.2f',index=False,decimal=",",header=True,columns=["Firstdate","Lastdate","IOCDetails","Country","sourceOfIoc","Remark","Risk"])
+                final_tpi.to_csv(response,sep=';',float_format='%.2f',index=False,decimal=",",header=True,columns=["Firstdate","Lastdate","IOCDetails","Country","sourceOfIoc","Count","Remark","Risk"])
 
                 #return HttpResponse(request.POST.get('daterange1'))
                 return response
