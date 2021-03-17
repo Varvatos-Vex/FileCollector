@@ -3,6 +3,7 @@ from .models import ThreatActorTable
 from .models import SourceTable
 from .models import AliasTable
 from .models import FileDetails
+from .models import MispGalaxies
 
 
 # Register your models here.
@@ -28,4 +29,10 @@ class AliasTableAdmin(admin.ModelAdmin):
 @admin.register(FileDetails)
 class FileDetailsAdmin(admin.ModelAdmin):
     list_display = ('id','User', 'date', 'ThreatActor', 'Index', 'FilePath','Defination')
+    pass
+
+
+@admin.register(MispGalaxies)
+class FileDetailsAdmin(admin.ModelAdmin):
+    list_display = ('uuid','ThreatActor', 'SuspectedAttribution', 'Alias', 'Victim', 'IncidentType','TargetSector', 'Description', 'Refrences','Related')
     pass

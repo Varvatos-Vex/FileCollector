@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 import pandas as pd
 import numpy as np
@@ -8,7 +8,8 @@ import time
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
-from .models import FileDetails, AliasTable, SourceTable, ThreatActorTable
+from .models import FileDetails, AliasTable, SourceTable, ThreatActorTable, MispGalaxies
+from django.core import serializers
 
 FileError = ''
 
@@ -148,11 +149,7 @@ def validateSource(dataframe,ThreatActor):
 
 
 
-
-
-
-
-    
+ #---------------Check The Index Of Uploaded CSV FILE---------------------   
 def CheckIndex(dataframe):
     global FileError
     indx1 = dataframe.columns.tolist() #----main DataFrame File
@@ -178,22 +175,39 @@ def home(request):
     FileData = FileDetails.objects.all().filter(User= request.user ).order_by('-id')[:50]
     return render(request, "dashboard/home.html",{"FileData":FileData})
 
+#--------------------------------------Fetch Data for DataTable in Threat Actor Section--------------------------
 @login_required(login_url='login')
 def threat(request):
-    ThreatActor = ThreatActorTable.objects.all().order_by('ThreatActor')
+    ThreatActor = MispGalaxies.objects.all().order_by('ThreatActor')
     return render(request, "dashboard/threatactor.html",{"data": ThreatActor})
 
+@csrf_exempt
+def thretadetails(request):
+    if request.method == 'POST':
+        uuid = request.POST.get('uuid')
+        ThreatActor = MispGalaxies.objects.filter(uuid = uuid)
+        ThreatActor = serializers.serialize('json', ThreatActor)
+        return JsonResponse(ThreatActor, safe=False)
+    else:
+        return HttpResponse("Failed")
 
+
+#--------------------------------------Auto Complete Search Box in Threat Actor Section--------------------------
 import json
+from django.db.models import Q
 @login_required(login_url='login')
 def autocompleteModel(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
-        search_qs = ThreatActorTable.objects.filter(ThreatActor__icontains=q)
+        #search_qs = ThreatActorTable.objects.filter(ThreatActor__icontains=q)
+        search_qs = MispGalaxies.objects.filter(Q(Alias__icontains=q) | Q(ThreatActor__icontains=q))
+        #qs_json = serializers.serialize('json', search_qs)
         results = []
         for r in search_qs:
             results.append(r.ThreatActor)
+        print(results)
         data = json.dumps(results)
+
     else:
         data = 'fail'
     mimetype = 'application/json'
@@ -228,11 +242,11 @@ def daterange(request):
     if not FilepathList:
         combined_csv =  pd.DataFrame()
     else:
-        combined_csv = pd.concat([pd.read_csv(f,keep_default_na=False) for f in FilepathList ]) #Combile All data into single frame using file Path
+        combined_csv = pd.concat([pd.read_csv(f,keep_default_na=False,) for f in FilepathList ]) #Combile All data into single frame using file Path
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=filename.csv'
-    combined_csv.to_csv(response,sep=';',float_format='%.2f',index=False,decimal=",")
+    combined_csv.to_csv(response,sep=',',float_format='%.2f',index=False,decimal=",")
 
     #return HttpResponse(request.POST.get('daterange1'))
     return response

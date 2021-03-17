@@ -22,3 +22,16 @@ class FileDetails(models.Model):
     Index =  models.CharField(max_length=30)
     Defination =  models.CharField(max_length=1200)
     FilePath = models.FileField(upload_to='Files/')
+
+
+class MispGalaxies(models.Model):
+    uuid = models.CharField(max_length=30)
+    ThreatActor =  models.CharField(max_length=50)
+    SuspectedAttribution =  models.CharField(max_length=50)
+    Alias =  models.CharField(max_length=200)
+    Victim =  models.CharField(max_length=200)
+    IncidentType =  models.CharField(max_length=50)
+    TargetSector =  models.CharField(max_length=200)
+    Description =  models.CharField(max_length=200)
+    Refrences =  models.CharField(max_length=200)
+    Related =  models.CharField(max_length=200)

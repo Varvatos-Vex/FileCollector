@@ -20,6 +20,9 @@ urlpatterns = [
     path('change-pass/', views.changePass, name='change-pass'),
     path('logout/', views.Logout, name='logout'),
     path('FileValidate/', views.ValidateFile, name='validate'),
+    path('misp/', otxview.misp, name='misp'),
+    path('misp_res/', otxview.misp_res, name='misp_res'),
     path('ajax_calls/search/', views.autocompleteModel,name = 'search'),
+    path('ajax_calls/ThreatActorDetails/', views.thretadetails,name = 't_details'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

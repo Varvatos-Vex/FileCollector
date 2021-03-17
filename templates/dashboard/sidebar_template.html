@@ -75,6 +75,17 @@
             </li>  
             {% endif %}
 
+            {% if request.user.is_active and request.user.is_staff %}
+            <li class="nav-item">
+              {% url 'misp' as misp %}
+              <a href="{{ misp }}" class="nav-link  ">
+                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                <p>
+                   UpdateMispGalaxy
+                </p>
+              </a>
+            </li>  
+            {% endif %}
 
 
           </ul>
