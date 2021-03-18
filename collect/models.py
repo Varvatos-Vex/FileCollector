@@ -35,3 +35,9 @@ class MispGalaxies(models.Model):
     Description =  models.CharField(max_length=200)
     Refrences =  models.CharField(max_length=200)
     Related =  models.CharField(max_length=200)
+
+from django.utils import timezone
+class AVModel(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    FilePath = models.FileField(upload_to='AV/')
+    

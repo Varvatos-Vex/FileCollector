@@ -1,2 +1,5 @@
 media/
 db.sqlite3
+pandasRead.py
+tpi_script.py
+AVScript.py
