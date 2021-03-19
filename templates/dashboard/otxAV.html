@@ -62,13 +62,10 @@
             { 
             console.log(data)
             if(data=='Failed'){alert("Error")}
+            else {alert('Success')}
           },
           error: function(data) {
             console.log('Failed');
-            },
-            complete:function(data){
-                // Hide image container
-                alert("Success")
             }
         });
 

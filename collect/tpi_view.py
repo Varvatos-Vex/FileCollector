@@ -25,7 +25,7 @@ def tpi_domainFunc(df_domain):
     tpi_domain = tpi_domain.assign(Country = 'NA')
     domainExtractedIp = df_domain[~(df_domain['ViolationIP'].isin(final_tpi['IOCDetails']))].reset_index(drop=True) #-----domain Ip not available in direct IP. link -> https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames
     try:    
-        domainExtractedIp = domainExtractedIp[domainExtractedIp.VT_Detection.astype(int) >= 2]
+        domainExtractedIp = domainExtractedIp[domainExtractedIp.VT_Detection.astype(int) >= 5]
     except:
         pass
     domainExtractedIp = domainExtractedIp[['ViolationIP','Country']]
