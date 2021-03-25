@@ -24,6 +24,7 @@ urlpatterns = [
     path('misp/', otxview.misp, name='misp'), #-----------------Load Misp Page
     path('misp_res/', otxview.misp_res, name='misp_res'), #--------------------------Upload New Data Jquery Call
     path('ajax_calls/search/', views.autocompleteModel,name = 'search'),
+    path('report/tActor', views.description,name = 'tActor'),
     path('ajax_calls/ThreatActorDetails/', views.thretadetails,name = 't_details'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -199,15 +199,14 @@ from django.db.models import Q
 def autocompleteModel(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
-        #search_qs = ThreatActorTable.objects.filter(ThreatActor__icontains=q)
-        search_qs = MispGalaxies.objects.filter(Q(Alias__icontains=q) | Q(ThreatActor__icontains=q))
+        search_qs = FileDetails.objects.filter(ThreatActor__icontains=q)
+        #search_qs = MispGalaxies.objects.filter(Q(Alias__icontains=q) | Q(ThreatActor__icontains=q))
         #qs_json = serializers.serialize('json', search_qs)
         results = []
         for r in search_qs:
             results.append(r.ThreatActor)
-        print(results)
+        results = list(set(results))
         data = json.dumps(results)
-
     else:
         data = 'fail'
     mimetype = 'application/json'
@@ -251,3 +250,24 @@ def daterange(request):
     #return HttpResponse(request.POST.get('daterange1'))
     return response
 
+#------------Description of ThreatActor-----------
+@csrf_exempt
+def description(request):
+    if request.method == 'POST':
+        tActor = request.POST.get('tActor')
+        if(tActor):
+            des = FileDetails.objects.filter( ThreatActor = tActor).order_by('-id')[:5]
+            desc = []
+            for d in des:
+                temp = dict()
+                temp['date'] = d.date
+                if len(d.Defination) > 10:
+                    temp['Description'] = d.Defination
+                    desc.append(temp)
+
+            return JsonResponse(desc,safe=False)
+        else:
+            return HttpResponse('SelecteActor')
+
+    else:
+        return HttpResponse('Failed')

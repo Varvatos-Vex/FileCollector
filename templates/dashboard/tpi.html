@@ -53,8 +53,10 @@
 
 
             success: function( data ) 
-            { 
-           
+            { if(data == "File not Found"){alert("File Not Found")}
+            else if(data == "Wrong File"){alert("Wrong File")}
+            else if(data == "Failed"){alert("Failed")}
+            else{           
                 var blob=new Blob([data]);
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
@@ -62,6 +64,7 @@
                 link.download=outFile;
                 link.click();
                 location.reload(true)
+            }
             
           },
           error: function(data) {

@@ -19,7 +19,12 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /-->
 <p>
-
+<style>
+    #mytable,td{
+    margin:20px;
+    padding-top: 10px;
+}
+</style>
 
 <div class="container">
     <div class="row">
@@ -63,10 +68,11 @@
             <div class="card-header">Threat Actor</div>
                 <div class="card-body">
                     <form>
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter ThreatActor">
+                        <input  type="text" class="form-control" id="txtSearch" name="txtSearch" placeholder="Enter ThreatActor">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" id = "TCheck">Submit</button>
                     </form>
                 </div>
             </div>
@@ -84,13 +90,35 @@
 
 
 
+<div class="modal  fade bd-example-modal-lg" tabindex="-1" role="dialog" id = "detail_modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id ='title'>Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-justify" style="font-size: small;">
+
+
+        <div class="card" id='div1'>
+            
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <script>
-  
-  $(function() {
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-    function cb(start, end) {
+    //JS Script for DateTime Picker
+    $(function() {
+      var start = moment().subtract(29, 'days');
+      var end = moment();
+      function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
@@ -112,7 +140,7 @@
 
 
 
-
+//JS Script to Fetch data within the Range
 $('#check').click(function(event){ 
         var daterange1 = document.getElementById("datevalue").innerText;
         var index = $('input[name="rdbutton"]:checked').val();
@@ -151,13 +179,55 @@ $('#check').click(function(event){
 
 
 
+//Script for autocomplete search
+       $(document).ready(function(){ 
+            $("#txtSearch").autocomplete({
+                source: "/ajax_calls/search/",
+                dataType: "json",
+                minLength: 2,
+                open: function(){
+                    setTimeout(function () {
+                        $('.ui-autocomplete').css('z-index', 99);
+                    }, 0);
+                    }
+              });
+         });
 
 
 
+//Fetch Description JQuery
 
+$('#TCheck').click(function(event){ 
+        var tActor = document.getElementById("txtSearch").value;
+        $.ajax( 
+            { 
+            type:"POST", 
+            url: '{% url "tActor" %}', 
+            data: {"tActor": tActor}, 
 
+            success: function( data )
+            { 
+                if(data=='SelecteActor'){alert('Select ThreatActor')}
 
+                else{
 
+               var tbl=$("<table/>").attr("id","mytable");
+                $("#div1").append(tbl);
+                for(var i=0;i<data.length;i++)
+                {
+                    var tr="<tr>";
+                    var td1="<td>"+data[i]["date"]+"</td>";
+                    var td2="<td>"+data[i]["Description"]+"</td></tr>";
+                    $("#mytable").append(tr+td1+td2);} 
+
+                $('#detail_modal').modal('show');}
+
+          },
+          error: function(data) {
+            console.log('Failed');
+            } 
+        })
+    });
 
 
 
