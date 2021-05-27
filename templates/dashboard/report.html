@@ -199,6 +199,7 @@ $('#check').click(function(event){
 
 $('#TCheck').click(function(event){ 
         var tActor = document.getElementById("txtSearch").value;
+
         $.ajax( 
             { 
             type:"POST", 
@@ -212,7 +213,7 @@ $('#TCheck').click(function(event){
                 else{
 
                var tbl=$("<table/>").attr("id","mytable");
-                $("#div1").append(tbl);
+                $("#div1").html(tbl);
                 for(var i=0;i<data.length;i++)
                 {
                     var tr="<tr>";

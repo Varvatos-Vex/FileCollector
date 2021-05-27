@@ -264,7 +264,6 @@ def description(request):
                 if len(d.Defination) > 10:
                     temp['Description'] = d.Defination
                     desc.append(temp)
-
             return JsonResponse(desc,safe=False)
         else:
             return HttpResponse('SelecteActor')
