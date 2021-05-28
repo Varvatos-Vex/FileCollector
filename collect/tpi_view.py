@@ -17,7 +17,7 @@ def tpi_ipFunc(df_ip):
     x = datetime.datetime.now()
     Firstdate = x.strftime('%d/%m/%Y')
     try:
-        df_ip = df_ip[df_ip.VT_Detection.astype(int) >= 2]
+        df_ip = df_ip[df_ip.VT_Detection.astype('Int64') >= 2]
     except:
         pass
     global final_tpi
@@ -38,19 +38,23 @@ def tpi_domainFunc(df_domain):
     tpi_domain = tpi_domain.assign(Country = 'NA')
     tpi_domain = tpi_domain.assign(FirstSeen = Firstdate)
     tpi_domain = tpi_domain.assign(LastSeen = Firstdate)
-    domainExtractedIp = df_domain[~(df_domain['ViolationIP'].isin(final_tpi['IOCDetails']))].reset_index(drop=True) #-----domain Ip not available in direct IP. link -> https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames
-    try:    
-        domainExtractedIp = domainExtractedIp[domainExtractedIp.VT_Detection.astype(int) >= 5]
-    except Exception as e:
-        print(e)
-        pass
-    backDate5Month = parser.parse(Firstdate) - timedelta(days = 150)
-    backDate5Month = backDate5Month.strftime('%d/%m/%Y')
-    domainExtractedIp = domainExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
-    domainExtractedIp = domainExtractedIp.assign(FirstSeen = backDate5Month)
-    domainExtractedIp = domainExtractedIp.assign(LastSeen = backDate5Month)
-    domainExtractedIp = domainExtractedIp.rename(columns={"ViolationIP": "IOCDetails"})
-    tpi_domain = tpi_domain.append(domainExtractedIp)
+    domainExtractedIp = DataFrame()
+    if not final_tpi.empty:
+        domainExtractedIp = df_domain[~(df_domain['ViolationIP'].isin(final_tpi['IOCDetails']))].reset_index(drop=True) #-----domain Ip not available in direct IP. link -> https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames
+
+    if not domainExtractedIp.empty:
+        try:    
+            domainExtractedIp = domainExtractedIp[domainExtractedIp.VT_Detection.astype('Int64') >= 5]
+        except Exception as e:
+            print(e)
+            pass
+        backDate5Month = parser.parse(Firstdate) - timedelta(days = 150)
+        backDate5Month = backDate5Month.strftime('%d/%m/%Y')
+        domainExtractedIp = domainExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
+        domainExtractedIp = domainExtractedIp.assign(FirstSeen = backDate5Month)
+        domainExtractedIp = domainExtractedIp.assign(LastSeen = backDate5Month)
+        domainExtractedIp = domainExtractedIp.rename(columns={"ViolationIP": "IOCDetails"})
+        tpi_domain = tpi_domain.append(domainExtractedIp)
     final_tpi = final_tpi.append(tpi_domain)
 
 def tpi_HashFunc(df_hash):
@@ -60,16 +64,22 @@ def tpi_HashFunc(df_hash):
     backDate5Month = parser.parse(Firstdate) - timedelta(days = 150)
     backDate5Month = backDate5Month.strftime('%d/%m/%Y')
     #df_hash = df_hash.loc[df_hash['ViolationIP'] != 'NA']
-    HashExtractedIp = df_hash[~(df_hash['ViolationIP'].isin(final_tpi['IOCDetails']))].reset_index(drop=True)
-    try:
-        HashExtractedIp = HashExtractedIp[HashExtractedIp.VT_Detection.astype(int) >= 5]
-    except Exception as e:
-        print(e)
-        pass
-    HashExtractedIp = HashExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
-    HashExtractedIp = HashExtractedIp.assign(FirstSeen = backDate5Month)
-    HashExtractedIp = HashExtractedIp.assign(LastSeen = backDate5Month)
-    final_tpi = final_tpi.append(HashExtractedIp)
+    HashExtractedIp = DataFrame()
+    if not final_tpi.empty:
+        HashExtractedIp = df_hash[~(df_hash['ViolationIP'].isin(final_tpi['IOCDetails']))].reset_index(drop=True)
+    if not HashExtractedIp.empty:
+        #HashExtractedIp.dropna(subset=['VT_Detection'])
+        HashExtractedIp['VT_Detection'].fillna(0)
+        try:
+            HashExtractedIp = HashExtractedIp[HashExtractedIp.VT_Detection.astype('Int64') >= 5]
+        except Exception as e:
+            print(e)
+            pass
+        HashExtractedIp = HashExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
+        HashExtractedIp = HashExtractedIp.assign(FirstSeen = backDate5Month)
+        HashExtractedIp = HashExtractedIp.assign(LastSeen = backDate5Month)
+        HashExtractedIp = HashExtractedIp.rename(columns={"ViolationIP": "IOCDetails"})
+        final_tpi = final_tpi.append(HashExtractedIp)
     
 
 #---------------- Program Start Here---------------
@@ -88,9 +98,12 @@ def creatTpi(df):
     df_domain = df.loc[(df.IOCType == 'Domain') & (df['ViolationIP'].notnull())] #-------------------Extract Domain  List
     df_hash = df.loc[(df['IOCType'] != 'IP') & (df['IOCType'] != 'Domain') & (df['ViolationIP'].notnull())] #-------------------Extract Hash  List
 
-    tpi_ipFunc(df_ip)
-    tpi_domainFunc(df_domain)
-    tpi_HashFunc(df_hash)
+    if not df_ip.empty:
+        tpi_ipFunc(df_ip)
+    if not df_domain.empty:
+        tpi_domainFunc(df_domain)
+    if not df_hash.empty:
+        tpi_HashFunc(df_hash)
     #final_tpi = final_tpi.assign(Firstdate = Firstdate)
     #final_tpi = final_tpi.assign(Lastdate = Firstdate)
     final_tpi = final_tpi.assign(sourceOfIoc = sourceOfIoc)
