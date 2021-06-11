@@ -52,7 +52,7 @@ def tpi_domainFunc(df_domain):
         backDate5Month = backDate5Month.strftime('%d/%m/%Y')
         domainExtractedIp = domainExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
         domainExtractedIp = domainExtractedIp.assign(FirstSeen = backDate5Month)
-        domainExtractedIp = domainExtractedIp.assign(LastSeen = backDate5Month)
+        domainExtractedIp = domainExtractedIp.assign(LastSeen = Firstdate)
         domainExtractedIp = domainExtractedIp.rename(columns={"ViolationIP": "IOCDetails"})
         tpi_domain = tpi_domain.append(domainExtractedIp)
     final_tpi = final_tpi.append(tpi_domain)
@@ -77,7 +77,7 @@ def tpi_HashFunc(df_hash):
             pass
         HashExtractedIp = HashExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
         HashExtractedIp = HashExtractedIp.assign(FirstSeen = backDate5Month)
-        HashExtractedIp = HashExtractedIp.assign(LastSeen = backDate5Month)
+        HashExtractedIp = HashExtractedIp.assign(LastSeen = Firstdate)
         HashExtractedIp = HashExtractedIp.rename(columns={"ViolationIP": "IOCDetails"})
         final_tpi = final_tpi.append(HashExtractedIp)
     
@@ -115,7 +115,9 @@ def creatTpi(df):
 
 #final_tpi.to_csv('FinalTpi.csv',header=True,columns=["Firstdate","Lastdate","IOCDetails","Country","sourceOfIoc","Remark","Risk"])
 def tpi(request):
-    return render(request, 'dashboard/tpi.html')
+    f = open("media/TPIcheckpoint.txt", "r")
+    checkpoint = f.read()
+    return render(request, 'dashboard/tpi.html',context=({"data":checkpoint}))
 
 @csrf_exempt    
 def tpi_res1(request):
@@ -169,6 +171,7 @@ def tpi_res(request):
             creatTpi(temp)
     
     final_tpiCombine = final_tpiCombine.drop_duplicates()
+    final_tpiCombine = final_tpiCombine.drop_duplicates(subset=["FirstSeen","LastSeen","IOCDetails","Country","sourceOfIoc","Count","Remark","Risk"])
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=filename.csv'
     try:

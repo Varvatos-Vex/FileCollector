@@ -1,0 +1,4 @@
+Change complete file path in collect/otxview
+change complete file path in collect/tpi_view
+
+Create group name 'tpi' and add group to users according to need
