@@ -35,10 +35,11 @@
 <script src="{% static "jquery/jquery-3.5.1.min.js" %}"></script>
 <script>
     $('#tpi').click(function(event){ 
-        var file_data = $('#file-upload').get(0).files[0]; // note [0]
+        var file_data = $('#example-date-input').val(); // note [0]
         var formData = new FormData();
         formData.append('file_data', file_data);
         var outputFile = "TPI"
+        console.log(formData)
         
         $.ajax( 
             { 
@@ -74,14 +75,6 @@
     });
 
 
-
-
-//for file name in input box
- $('#file-upload').change(function() {
-  var i = $(this).prev('label').clone();
-  var file = $('#file-upload')[0].files[0].name;
-  $(this).next('.custom-file-label').text(file);
-});
 </script>
 
 
