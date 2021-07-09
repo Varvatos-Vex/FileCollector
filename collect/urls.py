@@ -23,6 +23,10 @@ urlpatterns = [
     path('FileValidate/', views.ValidateFile, name='validate'),
     path('misp/', otxview.misp, name='misp'), #-----------------Load Misp Page
     path('misp_res/', otxview.misp_res, name='misp_res'), #--------------------------Upload New Data Jquery Call
+    path('tactor/', otxview.tactor, name='tactor'), #-----------------Load TActor
+    path('tactor_res/', otxview.tactor_res, name='tactor_res'), #--------------------------Upload New Data Jquery Call
+    path('tactor_orginal/', otxview.TactorResponse, name='tactor_original'), #--------------------------Original ThreatActor Name from collector to script
+
     path('ajax_calls/search/', views.autocompleteModel,name = 'search'),
     path('report/tActor', views.description,name = 'tActor'),
     path('ajax_calls/ThreatActorDetails/', views.thretadetails,name = 't_details'),

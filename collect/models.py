@@ -40,4 +40,9 @@ from django.utils import timezone
 class AVModel(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     FilePath = models.FileField(upload_to='AV/')
-    
+
+
+
+class TActorModel(models.Model):
+    ThreatActor =  models.CharField(max_length=50)
+    ThreatActorAlias =  models.CharField(max_length=500)

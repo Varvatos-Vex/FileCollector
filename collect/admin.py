@@ -5,6 +5,7 @@ from .models import AliasTable
 from .models import FileDetails
 from .models import MispGalaxies
 from .models import AVModel
+from .models import TActorModel
 
 
 # Register your models here.
@@ -41,4 +42,10 @@ class FileDetailsAdmin(admin.ModelAdmin):
 @admin.register(AVModel)
 class ThreatActorAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'FilePath')
+    pass
+
+
+@admin.register(TActorModel)
+class ThreatActorAdmin(admin.ModelAdmin):
+    list_display = ('ThreatActor', 'ThreatActorAlias')
     pass

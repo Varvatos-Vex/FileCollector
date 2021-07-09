@@ -17,7 +17,7 @@ def tpi_ipFunc(df_ip):
     x = datetime.datetime.now()
     Firstdate = x.strftime('%d/%m/%Y')
     try:
-        df_ip = df_ip[df_ip.VT_Detection.astype('Int64') >= 2]
+        df_ip = df_ip[df_ip.VT_Detection.astype('Int64') >= 1]
     except:
         pass
     global final_tpi
@@ -48,7 +48,7 @@ def tpi_domainFunc(df_domain):
         except Exception as e:
             print(e)
             pass
-        backDate5Month = parser.parse(Firstdate) - timedelta(days = 150)
+        backDate5Month = parser.parse(Firstdate) - timedelta(days = 60)
         backDate5Month = backDate5Month.strftime('%d/%m/%Y')
         domainExtractedIp = domainExtractedIp[['ViolationIP','Country','VT_Detection','IOCType']]
         domainExtractedIp = domainExtractedIp.assign(FirstSeen = backDate5Month)
@@ -61,7 +61,7 @@ def tpi_HashFunc(df_hash):
     global final_tpi
     x = datetime.datetime.now()
     Firstdate = x.strftime('%d/%m/%Y')
-    backDate5Month = parser.parse(Firstdate) - timedelta(days = 150)
+    backDate5Month = parser.parse(Firstdate) - timedelta(days = 60)
     backDate5Month = backDate5Month.strftime('%d/%m/%Y')
     #df_hash = df_hash.loc[df_hash['ViolationIP'] != 'NA']
     HashExtractedIp = DataFrame()
@@ -156,8 +156,14 @@ def tpi_res1(request):
 @csrf_exempt    
 def tpi_res(request):
     global final_tpiCombine
-    f = open("media/TPIcheckpoint.txt", "r")
-    checkpoint = f.read()
+    reqCheck = request.POST.get('file_data')
+    if reqCheck is None:
+        f = open("media/TPIcheckpoint.txt", "r")
+        checkpoint = f.read()
+    else:
+        checkpoint = reqCheck
+    print(checkpoint)
+    #return HttpResponse('Failed')
     now = datetime.datetime.now()
     data = FileDetails.objects.filter(date__range=[checkpoint, now],Index = 'Datalake_TA') #Filter Between Date Range and Index = Datalake_TA
     FilepathList = []

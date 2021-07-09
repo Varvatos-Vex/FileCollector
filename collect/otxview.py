@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
-from .models import MispGalaxies, AVModel
+from .models import MispGalaxies, AVModel, TActorModel
 import pandas as pd
 import io
 from pytz import timezone
@@ -157,33 +157,7 @@ def otxAPICall(now,lastDate):
         print("No IOCs are downloaded")
 
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      
 
 #--------------------------------Upadte MISP Data--------------------------------
 def misp(request):
@@ -216,3 +190,47 @@ def ingestMisp(dataframe):
         MispGalaxies(**vals)  for vals in dataframe.to_dict('records')
     )
     pass
+
+
+
+#--------------------------------Upadte ThreatActor Data--------------------------------
+def tactor(request):
+    return render(request, 'dashboard/tactor.html')
+
+
+@csrf_exempt
+def tactor_res(request):
+    if request.method == 'POST':
+        try:
+            uploaded_file = request.FILES.get('file_data')
+            if (uploaded_file is not None):
+                dataframe = pd.read_csv(io.StringIO(uploaded_file.read().decode('utf-8')), delimiter=':')
+                '''dataframe = dataframe[['Name', 'OtherNames']]
+                print(dataframe)'''
+                ingestTActor(dataframe)
+
+                return HttpResponse("Success")
+            else:
+                return HttpResponse("File not Found")
+        except  Exception as e:
+            print(e)
+            return HttpResponse("Wrong File {}".format(e))
+    else:
+        return HttpResponse("Failed")
+
+
+def ingestTActor(dataframe):
+    TActorModel.objects.all().delete() #First Delete ALl data and then Ingest
+    TActorModel.objects.bulk_create(
+        TActorModel(**vals)  for vals in dataframe.to_dict('records')
+    )
+    pass
+
+
+def TactorResponse(request):
+    rq = request.GET.get('q', None)
+    if rq is not None and rq !='':
+        rq = rq.strip()
+        return HttpResponse(rq)
+    else:
+        return HttpResponse("Null Value")
