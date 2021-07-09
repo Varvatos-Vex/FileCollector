@@ -231,6 +231,11 @@ def TactorResponse(request):
     rq = request.GET.get('q', None)
     if rq is not None and rq !='':
         rq = rq.strip()
-        return HttpResponse(rq)
+
+        result = TActorModel.objects.filter(ThreatActorAlias__contains=rq)
+        finalResult = []
+        for r in result:
+            finalResult.append(r.ThreatActor)
+        return HttpResponse(finalResult)
     else:
         return HttpResponse("Null Value")
