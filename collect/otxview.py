@@ -235,7 +235,10 @@ def TactorResponse(request):
         result = TActorModel.objects.filter(ThreatActorAlias__contains=rq)
         finalResult = []
         for r in result:
-            finalResult.append(r.ThreatActor)
-        return HttpResponse(finalResult)
+            finalResult.append(r.ThreatActor+',')
+        #finalResult = json.dumps(finalResult)
+        if not finalResult:
+            finalResult = rq
+        return HttpResponse(finalResult, content_type ="application/json")
     else:
-        return HttpResponse("Null Value")
+        return HttpResponse("UNKNOWN")
